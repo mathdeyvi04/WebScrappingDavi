@@ -1,7 +1,7 @@
 from Coletor import Coletor
 
 
-def main(
+def getter(
         url_desejada: str,
         usuario: str = None,
         senha: str = None
@@ -9,7 +9,7 @@ def main(
     bot = Coletor(usuario, senha)
     resp_de_carregamento = bot.init(
         url_desejada,
-        True
+    True
     )
 
     if not resp_de_carregamento:
@@ -28,9 +28,3 @@ def main(
 
     print("Download Concluído")
     bot.destroy()
-
-
-if __name__ == '__main__':
-    main(
-        "https://afiliado.supremaposta.com/login"
-    )

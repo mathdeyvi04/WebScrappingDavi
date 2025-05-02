@@ -9,6 +9,9 @@ Sendo assim, desenvolvi este mesmo programa no qual pude
 compreender melhor sobre a tecnlogia em nuvem e sobre o
 uso prático de POO.
 
+Desenvolvi de tal forma que a aplicação possa rodar sem
+surgimento de console.
+
 # Portabilidade
 
 * Necessidade do Navegador Chrome
@@ -24,6 +27,11 @@ Basta seguir o [link](https://youtu.be/FT0cWOUkCzI).
 Dependendo de como vc gerar o executável, somente será aceito em ambientes
 Windows, Linux ou Android, certifique-se.
 
+* Usuário e Senha
+
+Por serem informações confidenciais, devem ser colocadas diretamento no
+arquivo ```main.py```, só então a aplicação funcionará.
+
 # Como gerar o executável
 
 Note que o arquivo ```criar_executavel.py``` garante que alterações
@@ -35,13 +43,13 @@ Sendo assim, há duas possibilidades:
 * Gerar com Nuitka
 
 ```str
-nuitka --standalone --onefile criar_executavel.py
+nuitka --standalone --onefile main.py
 ```
 
 * Gerar com Pyinstaller
 
 ```str
-pyinstaller --onefile --noconsole criar_executavel.py
+pyinstaller --onefile --noconsole main.py
 ```
 
 

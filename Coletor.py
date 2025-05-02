@@ -152,7 +152,7 @@ class Coletor:
 
     def carregar_informacoes(
             self,
-            range_de_data_desejado: str = "Ano até hoje"
+            range_de_data_desejado: str = None
     ) -> bool:
         """
         Descrição:
@@ -197,6 +197,11 @@ class Coletor:
             "Semana Passada",
             "Mês Passado"
         }
+
+        # Dependendo do horário, devemos escolher o melhor
+        # resultado para range de intervalo de tempo
+        range_de_data_desejado = "Ontem" if range_de_data_desejado is None else range_de_data_desejado
+
         for cada_aba in abas_a_serem_varridas:
             # Selecionar aba correta
             self.navegador_web.find_element(
