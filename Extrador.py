@@ -6,8 +6,8 @@ def destroy():
     Devemos apagar os arquivos que fizemos conversões.
     """
 
-    for arq in listdir(getcwd()):
-        if arq.endswith(".csv"):
+    for arq in listdir():
+        if arq.endswith(".json"):
             remove(arq)
 
 
@@ -21,6 +21,14 @@ class Extrador:
         Vamos inicializar todos os elementos possíveis de .csv na pasta Downloads.
         """
 
+        self.config = {
+            'user': 'writer',
+            'password': '7TjmP0E3q4fm',
+            'host': '34.9.125.77',
+            'port': '5432',
+            'dbname': 'postgres'
+        }
+
         self.arquivos_disponiveis = []
         self.casa_de_download = Path.home() / "Downloads"
 
@@ -31,15 +39,17 @@ class Extrador:
                     arquivo
                 )
 
-        if len(self.arquivos_disponiveis) > 4:
-            # Então há um intruso, devemos fazer algo.
-            pass
+        if not any(arq.endswith(".json") for arq in listdir()):
+            if len(self.arquivos_disponiveis) > 4:
+                # Então há um intruso, devemos fazer algo.
+                exit(-1)
 
-        if len(self.arquivos_disponiveis) < 4:
-            # Há um faltante.
-            pass
+            if len(self.arquivos_disponiveis) < 4:
+                # Há um faltante.
+                exit(-2)
 
-    def verificacoes(self):
+
+    def verificar_converter(self):
         """
         Descrição:
             Faremos verificações intrínsecas à qual relatório pertence a qual.
@@ -55,10 +65,10 @@ class Extrador:
 
         # Do jeito que construimos Coletor, só nos resta:
         correspondentes = {
-            "data.csv": "relatorio_de_midia.json",
-            "data (1).csv": "relatorio_de_registros.json",
-            "data (2).csv": "relatorio_de_ganhos.json",
-            "data (3).csv": "relatorio_de_atividades.json"
+            "data.csv": "platformmidia.json",
+            "data (1).csv": "platform_registros.json",
+            "data (2).csv": "platform_ganhos.json",
+            "data (3).csv": "platform_atividades.json"
         }
 
         for i in range(0, 4):
@@ -69,6 +79,48 @@ class Extrador:
             self.arquivos_disponiveis[i] = Extrador.conversor(
                 correspondentes[self.arquivos_disponiveis[i]]
             )
+
+    def enviar(self):
+        """
+        Vamos enviar à tabela.
+        """
+
+        if len(self.arquivos_disponiveis) == 0:
+            self.arquivos_disponiveis = [
+                arq for arq in listdir() if arq.endswith(".json")
+            ]
+
+        conn = psycopg2.connect(
+            **self.config
+        )
+        cursor = conn.cursor()
+
+        for arquivo in self.arquivos_disponiveis:
+            with open(
+                    arquivo,
+                    "r"
+            ) as arq:
+                conteudo_json = json.load(arq)
+
+            # Vamos inserir
+            query = """
+                INSERT INTO aposta_suprema_events (file_name, source_name, payload)
+                VALUES (%s, %s, %s);
+            """
+
+            cursor.execute(
+                query,
+                (
+                    arquivo.replace(".json", ""),
+                    "scrapping_server",
+                    json.dumps(conteudo_json)
+                )
+            )
+
+            print(f"{arquivo} foi enviado com sucesso")
+
+        cursor.close()
+        conn.close()
 
     @staticmethod
     def conversor(arquivo: str) -> str:
@@ -91,6 +143,8 @@ class Extrador:
 if __name__ == '__main__':
     analiser = Extrador()
 
-    analiser.verificacoes()
+    # analiser.verificar_converter()
+
+    analiser.enviar()
 
     destroy()

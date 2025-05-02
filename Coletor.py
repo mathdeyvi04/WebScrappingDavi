@@ -200,7 +200,7 @@ class Coletor:
 
         # Dependendo do horário, devemos escolher o melhor
         # resultado para range de intervalo de tempo
-        range_de_data_desejado = "Ontem" if range_de_data_desejado is None else range_de_data_desejado
+        range_de_data_desejado = "Hoje" if range_de_data_desejado is None else range_de_data_desejado
 
         for cada_aba in abas_a_serem_varridas:
             # Selecionar aba correta

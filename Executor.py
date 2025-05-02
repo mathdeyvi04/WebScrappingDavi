@@ -9,7 +9,7 @@ def getter(
     bot = Coletor(usuario, senha)
     resp_de_carregamento = bot.init(
         url_desejada,
-    True
+
     )
 
     if not resp_de_carregamento:
