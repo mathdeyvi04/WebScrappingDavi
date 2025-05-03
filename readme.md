@@ -29,8 +29,11 @@ Windows, Linux ou Android, certifique-se.
 
 * Usuário e Senha
 
-Por serem informações confidenciais, devem ser colocadas diretamento no
-arquivo ```main.py```, só então a aplicação funcionará.
+Por serem informações confidenciais, devem ser colocadas no arquivo `config.py`.
+Um modelo de configuração está disponível em `config_sample.py`. 
+Copie este arquivo para `config.py` e preencha com suas credenciais reais.
+O arquivo `config.py` está incluído no `.gitignore` para garantir que suas credenciais
+não sejam acidentalmente compartilhadas em repositórios Git.
 
 # Como gerar o executável
 
