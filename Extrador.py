@@ -48,7 +48,6 @@ class Extrador:
                 # Há um faltante.
                 exit(-2)
 
-
     def verificar_converter(self):
         """
         Descrição:
@@ -140,11 +139,35 @@ class Extrador:
         return arquivo
 
 
+    def ver_tabela(self) -> None:
+        conn = psycopg2.connect(
+            **self.config
+        )
+        cursor = conn.cursor()
+
+        query = "SELECT file_name, source_name, payload FROM aposta_suprema_events LIMIT 10;"
+        cursor.execute(query)
+
+        # 📋 Captura os resultados
+        registros = cursor.fetchall()
+
+        # 📤 Mostra os dados
+        for file_name, source_name, payload in registros:
+            print(f"\n📂 file_name: {file_name}")
+            print(f"🛰️ source_name: {source_name}")
+            print(f"📦 payload:\n{json.dumps(payload, indent=4)}")
+
+        cursor.close()
+        conn.close()
+
+
 if __name__ == '__main__':
     analiser = Extrador()
 
     # analiser.verificar_converter()
 
-    analiser.enviar()
+    # analiser.enviar()
+
+    analiser.ver_tabela()
 
     destroy()
