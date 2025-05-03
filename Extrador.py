@@ -94,32 +94,44 @@ class Extrador:
         )
         cursor = conn.cursor()
 
-        for arquivo in self.arquivos_disponiveis:
-            with open(
-                    arquivo,
-                    "r"
-            ) as arq:
-                conteudo_json = json.load(arq)
+        try:
+            for arquivo in self.arquivos_disponiveis:
+                with open(
+                        arquivo,
+                        "r"
+                ) as arq:
+                    conteudo_json = json.load(arq)
 
-            # Vamos inserir
-            query = """
-                INSERT INTO aposta_suprema_events (file_name, source_name, payload)
-                VALUES (%s, %s, %s);
-            """
+                # Vamos inserir
+                query = """
+                    INSERT INTO aposta_suprema_events (file_name, source_name, payload)
+                    VALUES (%s, %s, %s);
+                """
 
-            cursor.execute(
-                query,
-                (
-                    arquivo.replace(".json", ""),
-                    "scrapping_server",
-                    json.dumps(conteudo_json)
+                cursor.execute(
+                    query,
+                    (
+                        arquivo.replace(".json", ""),
+                        "scrapping_server",
+                        json.dumps(conteudo_json)
+                    )
                 )
-            )
 
-            print(f"{arquivo} foi enviado com sucesso")
-
-        cursor.close()
-        conn.close()
+                print(f"{arquivo} foi enviado com sucesso")
+            
+            # Confirma as alterações no banco de dados
+            conn.commit()
+            print("Todas as transações foram confirmadas com sucesso!")
+            
+        except Exception as e:
+            # Em caso de erro, desfaz as alterações
+            conn.rollback()
+            print(f"Erro durante o envio: {e}")
+            raise
+        finally:
+            # Sempre fecha o cursor e a conexão
+            cursor.close()
+            conn.close()
 
     @staticmethod
     def conversor(arquivo: str) -> str:
