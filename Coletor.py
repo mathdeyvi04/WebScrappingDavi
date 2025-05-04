@@ -12,10 +12,7 @@ class Coletor:
         Apenas a declaração default de variáveis.
         """
 
-        self.__usuario, self.__senha = self.__obter_login(
-            # Caminho para Login
-            r"C:\Users\deyvi\Documents\ImperioPy\Aplicativos\Automação\login_webscrapping_davi.txt"
-        ) if usuario is None else (usuario, senha)
+        self.__usuario, self.__senha = usuario, senha
 
         self.waiter = None
         self.navegador_web = None
@@ -74,7 +71,6 @@ class Coletor:
                 self.navegador_web,
                 10  # Para qualquer coisa, vamos esperar no máximo 10 segundos.
             )
-
             # Acessamos o site e verificamos se houve carregamento completo
             # Só então liberamos
             self.navegador_web.get(
@@ -110,7 +106,8 @@ class Coletor:
         """
 
         try:
-            sleep(0.5)
+            # print("Colocando usuário")
+            sleep(1)
             self.navegador_web.find_element(
                 By.NAME,
                 "user"
@@ -118,7 +115,8 @@ class Coletor:
                 self.__usuario
             )
 
-            sleep(0.5)
+            # print("Colocando senha")
+            sleep(1)
             self.navegador_web.find_element(
                 By.NAME,
                 "password"
@@ -126,13 +124,32 @@ class Coletor:
                 self.__senha
             )
 
-            sleep(0.5)
-            self.navegador_web.find_element(
-                By.CLASS_NAME,
-                "submit-btn"
-            ).click()
+            # print("Esperando possibilidade de logger")
+            elemento = self.waiter.until(
+                Expect_Condit.element_to_be_clickable(
+                    (
+                        By.CLASS_NAME,
+                        "submit-btn"
+                    )
+                )
+            )
+            sleep(1)
+            # self.navegador_web.find_element(
+            #     By.CLASS_NAME,
+            #     "submit-btn"
+            # ).click()
+            """
+            Como pode ver acima, a execução utilizando python não
+            estava funcionando com a tela desligada, por isso
+            forcei a execução usando javascript.
+            """
+            self.navegador_web.execute_script(
+                "arguments[0].click();",
+                elemento
+            )
 
-            sleep(0.5)
+            # print("Esperando carregamento de página")
+            sleep(1)
             # Normalmente será bem rápido, mas dependerá da internet,
             # Por isso, manteremos o waiter.
             self.waiter.until(
@@ -167,6 +184,7 @@ class Coletor:
 
         """
 
+        # print("Esperando toggle")
         sleep(0.5)
         # Garante que estaremos no local certo para extrair as informações
         self.navegador_web.find_element(
@@ -174,12 +192,14 @@ class Coletor:
             "mobileToggle"
         ).click()
 
+        # print("Esperando abas de relatórios")
         sleep(0.5)
         self.navegador_web.find_element(
             By.LINK_TEXT,
             "Relatórios"
         ).click()
 
+        # print("Esperando opções de relatórios")
         # Vamos varrer cada uma das abas
         sleep(0.5)
         abas_a_serem_varridas = (
@@ -200,7 +220,7 @@ class Coletor:
 
         # Dependendo do horário, devemos escolher o melhor
         # resultado para range de intervalo de tempo
-        range_de_data_desejado = "Hoje" if range_de_data_desejado is None else range_de_data_desejado
+        range_de_data_desejado = "Últimos 7 Dias" if range_de_data_desejado is None else range_de_data_desejado
 
         for cada_aba in abas_a_serem_varridas:
             # Selecionar aba correta

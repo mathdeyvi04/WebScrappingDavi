@@ -1,16 +1,6 @@
 from FuncoesBasicas import *
 
 
-def destroy():
-    """
-    Devemos apagar os arquivos que fizemos conversões.
-    """
-
-    for arq in listdir():
-        if arq.endswith(".json"):
-            remove(arq)
-
-
 class Extrador:
     """
     Classe responsável por executar a análise geral dos dados obtidos.
@@ -118,11 +108,11 @@ class Extrador:
                 )
 
                 print(f"{arquivo} foi enviado com sucesso")
-            
+
             # Confirma as alterações no banco de dados
             conn.commit()
             print("Todas as transações foram confirmadas com sucesso!")
-            
+
         except Exception as e:
             # Em caso de erro, desfaz as alterações
             conn.rollback()
@@ -150,7 +140,6 @@ class Extrador:
 
         return arquivo
 
-
     def ver_tabela(self) -> None:
         conn = psycopg2.connect(
             **self.config
@@ -173,7 +162,20 @@ class Extrador:
         conn.close()
 
 
+
+    def destroy(self):
+        """
+        Devemos apagar os arquivos que fizemos conversões.
+        """
+
+        for arq in listdir():
+            if arq.endswith(".json"):
+                remove(arq)
+
+
 if __name__ == '__main__':
+    # Apenas ambiente de teste
+
     analiser = Extrador()
 
     # analiser.verificar_converter()
@@ -181,5 +183,3 @@ if __name__ == '__main__':
     # analiser.enviar()
 
     analiser.ver_tabela()
-
-    destroy()
