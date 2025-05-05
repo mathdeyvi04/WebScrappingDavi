@@ -137,7 +137,6 @@ if __name__ == "__main__":
 
             # Desejamos executar novamente no próximo dia
             horario_desejado_de_execucao += timedelta(days=1)
-            print(horario_desejado_de_execucao)
 
         sleep(
             TEMPO_ADORMECIDO_DE_ESPERA

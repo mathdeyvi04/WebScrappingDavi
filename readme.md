@@ -1,18 +1,23 @@
 # Descrição
 
 Um amigo pediu-me que eu desenvolvesse uma aplicação 
-capaz de realziar WebScrapping em um determinado site,
-além de hospedá-lo no Google Cloud, a fim de possuir
-certa periodicidade de execução.
+capaz de realiziar WebScrapping em um determinado site,
+além de desenvolver uma forma de executá-lo com periodicidade.
 
-Sendo assim, desenvolvi este mesmo programa no qual pude
-compreender melhor sobre a tecnlogia em nuvem e sobre o
-uso prático de POO.
+Sendo assim, desenvolvi este conjunto de programas que 
+alcançam essas necessidades.
 
-Desenvolvi de tal forma que a aplicação possa rodar sem
-surgimento de console.
+Tecnologias Utilizadas:
 
-# Portabilidade
+* PostGreSQL
+* Selenium
+* Schedule
+
+Tive o prazer também de trabalhar em grupo com outros profissionais, posso
+citar, por exemplo, [JP](https://github.com/JoaoPSilvaDev), a partir do qual pude 
+aprender muito.
+
+# Portabilidade da Aplicação
 
 * Necessidade do Navegador Chrome
 
@@ -20,12 +25,7 @@ A aplicação utiliza o navegador Chrome, logo é necessário que ele esteja ins
 
 * Necessidade do WebDriver correspondente ao Chrome
 
-Basta seguir o [link](https://youtu.be/FT0cWOUkCzI). 
-
-* Máquina
-
-Dependendo de como vc gerar o executável, somente será aceito em ambientes
-Windows, Linux ou Android, certifique-se.
+É como se utilizássemos uma "api" do chrome, basta seguir o [link](https://youtu.be/FT0cWOUkCzI).
 
 * Usuário e Senha
 
@@ -35,25 +35,7 @@ Copie este arquivo para `config.py` e preencha com suas credenciais reais.
 O arquivo `config.py` está incluído no `.gitignore` para garantir que suas credenciais
 não sejam acidentalmente compartilhadas em repositórios Git.
 
-# Como gerar o executável
-
-Note que o arquivo ```criar_executavel.py``` garante que alterações
-no código dos arquivos sejam repassadas, logo este arquivo é apenas 
-um centralizador.
-
-Sendo assim, há duas possibilidades:
-
-* Gerar com Nuitka
-
-```str
-nuitka --standalone --onefile main.py
-```
-
-* Gerar com Pyinstaller
-
-```str
-pyinstaller --onefile --noconsole main.py
-```
-
-
-
+> Apenas para demonstrar o grau de satisfação:
+<div align="center">
+<img src="https://github.com/user-attachments/assets/9ab740a8-3f0c-49ad-abc4-729753f3687b" height="500"/>
+</div>
